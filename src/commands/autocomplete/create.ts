@@ -4,6 +4,7 @@ import * as path from 'node:path'
 
 import bashAutocomplete from '../../autocomplete/bash.js'
 import bashAutocompleteWithSpaces from '../../autocomplete/bash-spaces.js'
+import Carapace from '../../autocomplete/carapace.js'
 import PowerShellComp from '../../autocomplete/powershell.js'
 import ZshCompWithSpaces from '../../autocomplete/zsh.js'
 import {AutocompleteBase} from '../../base.js'
@@ -144,6 +145,7 @@ export default class Create extends AutocompleteBase {
           : [
               writeFile(this.zshCompletionFunctionPath, new ZshCompWithSpaces(this.config).generate()),
               writeFile(this.pwshCompletionFunctionPath, new PowerShellComp(this.config).generate()),
+              writeFile(this.carapaceCompletionFunctionPath, new Carapace(this.config).generate()),
             ],
       ),
     )
@@ -204,6 +206,16 @@ export default class Create extends AutocompleteBase {
         return `"${completion}"`
       })
       .join('\n')
+  }
+
+  private get carapaceCompletionFunctionPath(): string {
+    // <cachedir>/autocomplete/functions/carapace/<bin>.yaml
+    return path.join(this.carapaceFunctionsDir, `${this.cliBin}.yaml`)
+  }
+
+  private get carapaceFunctionsDir(): string {
+    // <cachedir>/autocomplete/functions/carapace
+    return path.join(this.autocompleteCacheDir, 'functions', 'carapace')
   }
 
   private get pwshCompletionFunctionPath(): string {

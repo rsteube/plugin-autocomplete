@@ -7,7 +7,7 @@ export default class Script extends AutocompleteBase {
   static args = {
     shell: Args.string({
       description: 'Shell type',
-      options: ['zsh', 'bash', 'powershell'],
+      options: ['zsh', 'bash', 'powershell', 'carapace'],
       required: false,
     }),
   }
