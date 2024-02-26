@@ -141,8 +141,10 @@ export default class Create extends AutocompleteBase {
         // eslint-disable-next-line unicorn/prefer-spread
       ].concat(
         process.env.OCLIF_AUTOCOMPLETE_TOPIC_SEPARATOR === 'colon' || !supportSpaces
-          ? [writeFile(this.zshCompletionFunctionPath, this.zshCompletionFunction)]
-          : [
+          ? [
+              writeFile(this.zshCompletionFunctionPath, this.zshCompletionFunction),
+              writeFile(this.carapaceCompletionFunctionPath, new Carapace(this.config).generate()),
+          ] : [
               writeFile(this.zshCompletionFunctionPath, new ZshCompWithSpaces(this.config).generate()),
               writeFile(this.pwshCompletionFunctionPath, new PowerShellComp(this.config).generate()),
               writeFile(this.carapaceCompletionFunctionPath, new Carapace(this.config).generate()),
@@ -156,6 +158,7 @@ export default class Create extends AutocompleteBase {
     await mkdir(this.autocompleteCacheDir, {recursive: true})
     await Promise.all([
       mkdir(this.bashFunctionsDir, {recursive: true}),
+      mkdir(this.carapaceFunctionsDir, {recursive: true}),
       mkdir(this.zshFunctionsDir, {recursive: true}),
       mkdir(this.pwshFunctionsDir, {recursive: true}),
     ])
